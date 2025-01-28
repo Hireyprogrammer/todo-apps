@@ -3,12 +3,16 @@ import 'package:get/get.dart';
 import 'package:todo_app/core/routes/app_pages.dart';
 import 'package:todo_app/core/theme/app_theme.dart';
 import 'package:todo_app/core/services/connectivity_service.dart';
+import 'package:todo_app/controllers/auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Services
   await Get.putAsync(() => ConnectivityService().init());
+  
+  // Initialize Controllers
+  Get.put(AuthController());
   
   runApp(const MyApp());
 }

@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/core/routes/app_pages.dart';
+import 'package:todo_app/controllers/auth_controller.dart';
+import 'package:todo_app/core/utils/notification_helper.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthController _authController = Get.find<AuthController>();
+
+  void _validateAndSignIn() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      NotificationHelper.showError('Please fill all fields');
+      return;
+    }
+
+    if (!GetUtils.isEmail(email)) {
+      NotificationHelper.showError('Please enter a valid email');
+      return;
+    }
+
+    _authController.signIn(email, password).then((_) {
+      NotificationHelper.showSuccess('Login successful');
+    }).catchError((error) {
+      NotificationHelper.showError(error.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +66,7 @@ class SignInScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               TextField(
+                controller: _emailController,
                 decoration: const InputDecoration(
                   hintText: 'Enter your Email address',
                   prefixIcon: Icon(Icons.email_outlined),
@@ -47,12 +75,20 @@ class SignInScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               TextField(
-                obscureText: true,
-                decoration: const InputDecoration(
+                controller: _passwordController,
+                obscureText: !_authController.isPasswordVisible.value,
+                decoration: InputDecoration(
                   hintText: 'Enter Password',
-                  prefixIcon: Icon(Icons.lock_outline),
-                  suffixIcon: Icon(Icons.visibility_outlined),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _authController.isPasswordVisible.value
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    ),
+                    onPressed: _authController.togglePasswordVisibility,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 ),
               ),
               Align(
@@ -64,14 +100,13 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              ElevatedButton.icon(
-                onPressed: () => Get.toNamed(Routes.HOME),
-                icon: const Icon(Icons.login),
-                label: const Text('Sign In'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-              ),
+              Obx(() => _authController.isLoading.value
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton.icon(
+                      onPressed: _validateAndSignIn,
+                      icon: const Icon(Icons.login),
+                      label: const Text('Sign In'),
+                    )),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

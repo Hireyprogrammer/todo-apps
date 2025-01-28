@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:todo_app/core/services/logger_service.dart';
 
 class ConnectivityService extends GetxService {
   final Connectivity _connectivity = Connectivity();
@@ -36,8 +37,10 @@ class ConnectivityService extends GetxService {
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen((result) async {
       if (result == ConnectivityResult.none) {
         isConnected.value = false;
+        AppLogger.connectionStatus(false);
       } else {
         isConnected.value = await _internetChecker.hasConnection;
+        AppLogger.connectionStatus(isConnected.value);
       }
     });
   }

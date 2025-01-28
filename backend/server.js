@@ -80,7 +80,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server with port handling
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`📚 Book Store Backend is running on port ${PORT} 🎉`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {

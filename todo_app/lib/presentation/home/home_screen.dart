@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/widgets/base_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'My Lists',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+    return BaseScreen(
+      title: 'My Lists',
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
-      body: Padding(
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_view),
+            label: 'Lists',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.access_time),
+            label: 'Activity',
+          ),
+        ],
+      ),
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.count(
           crossAxisCount: 2,
@@ -48,22 +55,6 @@ class HomeScreen extends StatelessWidget {
             _buildAddListCard(),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: 'Lists',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.access_time),
-            label: 'Activity',
-          ),
-        ],
       ),
     );
   }

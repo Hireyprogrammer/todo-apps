@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/core/routes/app_pages.dart';
 import 'package:todo_app/core/theme/app_theme.dart';
+import 'package:todo_app/core/services/connectivity_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Services
+  await Get.putAsync(() => ConnectivityService().init());
+  
   runApp(const MyApp());
 }
 

@@ -17,9 +17,9 @@ const sendVerificationPinEmail = async (userEmail, username, pin) => {
         await transporter.sendMail({
             from: process.env.EMAIL_FROM,
             to: userEmail,
-            subject: "Your Book Store Verification Code",
+            subject: "Your Todo App Verification Code",
             html: `
-                <h1>Welcome to Book Store, ${username}!</h1>
+                <h1>Welcome to Todo App, ${username}!</h1>
                 <p>Thank you for registering. Please use the following verification code to complete your registration:</p>
                 <div style="background-color: #f4f4f4; padding: 15px; margin: 20px 0; text-align: center; font-size: 24px; letter-spacing: 5px; font-family: monospace;">
                     <strong>${pin}</strong>
@@ -41,15 +41,15 @@ const sendWelcomeEmail = async (userEmail, username) => {
         await transporter.sendMail({
             from: process.env.EMAIL_FROM,
             to: userEmail,
-            subject: "Welcome to Book Store!",
+            subject: "Welcome to Todo-App!",
             html: `
-                <h1>Welcome to Book Store, ${username}!</h1>
+                <h1>Welcome to Todo-App, ${username}!</h1>
                 <p>Thank you for verifying your email. Your account is now fully activated!</p>
                 <p>You can now:</p>
                 <ul>
-                    <li>Browse our extensive collection of books</li>
-                    <li>Create your reading lists</li>
-                    <li>Share reviews and ratings</li>
+                    <li>Add your tasks</li>
+                    <li>Edit your tasks</li>
+                    <li>Delete your tasks</li>
                 </ul>
                 <p>Happy reading!</p>
             `

@@ -159,7 +159,7 @@ router.post('/resend-verification', async (req, res) => {
       email: user.email,
       subject: 'New Email Verification Code',
       html: `
-        <h1>New Verification Code</h1>
+        <h1>New Verification Code For Todo-App</h1>
         <p>Your new verification code is: <strong>${verificationCode}</strong></p>
         <p>This code will expire in 30 minutes.</p>
       `

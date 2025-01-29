@@ -33,6 +33,7 @@ class AuthController extends GetxController {
       
       await _authService.register(username, email, password);
       AppLogger.navigation('SignUp', 'VerifyEmail');
+        LoadingOverlay.hide();
       Get.toNamed(Routes.VERIFY_EMAIL, arguments: {'email': email});
     } catch (e) {
       AppLogger.error('Signup process failed', e);
@@ -66,7 +67,9 @@ class AuthController extends GetxController {
       
       final token = await _authService.login(email, password);
       NotificationHelper.showSuccess('Welcome back!');
+       LoadingOverlay.hide();
       Get.offAllNamed(Routes.HOME);
+       
     } catch (e) {
       NotificationHelper.showError(e.toString());
       errorMessage.value = e.toString();

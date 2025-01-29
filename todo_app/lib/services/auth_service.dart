@@ -7,8 +7,8 @@ class AuthService {
   final Dio _dio = Dio(BaseOptions(
     baseUrl: ApiConstants.baseUrl,
     validateStatus: (status) => status! < 500,
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 3),
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
   ));
   
   final StorageService _storage = StorageService();
@@ -24,12 +24,20 @@ class AuthService {
         'password': password,
       });
 
+      print(username);
+      print(email);
+      print(password);
+
+      print(response.statusCode);
+
+      print(response.data);
+
       if (response.statusCode == 201) {
         AppLogger.authSuccess('Registration');
         AppLogger.apiResponse(ApiConstants.register, response.data);
         return response.data;
       }
-      throw response.data['message'] ?? 'Registration failed';
+      throw response.data['message'] ?? 'Registration faileds';
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.connectionError) {

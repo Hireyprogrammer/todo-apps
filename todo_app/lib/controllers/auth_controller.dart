@@ -62,7 +62,7 @@ class AuthController extends GetxController {
 
   Future<void> signIn(String email, String password) async {
     try {
-      LoadingOverlay.show();
+      // LoadingOverlay.show();
       errorMessage.value = '';
       
       final token = await _authService.login(email, password);
@@ -73,6 +73,19 @@ class AuthController extends GetxController {
     } catch (e) {
       NotificationHelper.showError(e.toString());
       errorMessage.value = e.toString();
+    } finally {
+      LoadingOverlay.hide();
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      LoadingOverlay.show();
+      await _authService.logout();
+      NotificationHelper.showSuccess('Logged out successfully');
+      Get.offAllNamed(Routes.SIGNIN);
+    } catch (e) {
+      NotificationHelper.showError(e.toString());
     } finally {
       LoadingOverlay.hide();
     }

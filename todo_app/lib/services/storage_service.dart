@@ -10,10 +10,15 @@ class StorageService {
   }
 
   Future<void> saveToken(String token) async {
-    AppLogger.storageOperation('Saving auth token');
+    print('DEBUG - Full Token: $token'); // Temporary debug print
+    AppLogger.storageOperation('Storage: Saving auth token: $token');
     try {
       await _box.write(_tokenKey, token);
-      AppLogger.storageOperation('Token saved successfully');
+      AppLogger.storageOperation('Storage: Token saved successfully in GetStorage');
+      
+      // Verify stored token
+      final storedToken = _box.read(_tokenKey);
+      AppLogger.storageOperation('Storage: Verified stored token: $storedToken');
     } catch (e) {
       AppLogger.storageError('saveToken', e);
       rethrow;
@@ -21,7 +26,9 @@ class StorageService {
   }
 
   String? getToken() {
-    return _box.read(_tokenKey);
+    final token = _box.read(_tokenKey);
+    AppLogger.storageOperation('Storage: Current stored token: $token');
+    return token;
   }
 
   Future<void> removeToken() async {

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/core/widgets/base_screen.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/controllers/auth_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.find<AuthController>();
+    
     return BaseScreen(
       title: 'My Lists',
       floatingActionButton: FloatingActionButton(
@@ -22,7 +26,34 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.access_time),
             label: 'Activity',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Logout',
+          ),
         ],
+        onTap: (index) {
+          if (index == 2) { // Logout item index
+            Get.dialog(
+              AlertDialog(
+                title: const Text('Confirm Logout'),
+                content: const Text('Are you sure you want to logout?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                      authController.logout();
+                    },
+                    child: const Text('Logout'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),

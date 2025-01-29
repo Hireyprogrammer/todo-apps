@@ -26,7 +26,7 @@ class SignInScreen extends StatelessWidget {
     }
 
     _authController.signIn(email, password).then((_) {
-      NotificationHelper.showSuccess('Login successful');
+      // NotificationHelper.showSuccess('Login successful');
     }).catchError((error) {
       NotificationHelper.showError(error.toString());
     });

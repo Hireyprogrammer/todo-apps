@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:todo_app/core/constants/api_constants.dart';
 import 'package:todo_app/services/storage_service.dart';
 import 'package:todo_app/core/services/logger_service.dart';
+import 'package:get/get.dart';
 
 class AuthService {
   final Dio _dio = Dio(BaseOptions(
@@ -24,13 +25,7 @@ class AuthService {
         'password': password,
       });
 
-      print(username);
-      print(email);
-      print(password);
-
-      print(response.statusCode);
-
-      print(response.data);
+     
 
       if (response.statusCode == 201) {
         AppLogger.authSuccess('Registration');
@@ -80,6 +75,7 @@ class AuthService {
         await _storage.saveToken(token);
         return token;
       }
+      
       throw response.data['message'] ?? 'Login failed';
     } catch (e) {
       throw 'Login failed: $e';
@@ -88,5 +84,6 @@ class AuthService {
 
   Future<void> logout() async {
     await _storage.removeToken();
+ 
   }
 } 
